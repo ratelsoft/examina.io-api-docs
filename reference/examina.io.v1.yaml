@@ -546,6 +546,8 @@ paths:
                       - ratelsoft
                       - ratelsoft inc
       description: This retrieves all the tags added to an Exam as an array.
+      tags:
+        - exams
   '/examinee/{id}':
     parameters:
       - schema:
