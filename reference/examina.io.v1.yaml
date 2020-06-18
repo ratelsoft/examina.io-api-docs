@@ -17,7 +17,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/paginated-exam'
+                $ref: ./raw/paginated-exam.schema.json
               examples:
                 Sample paginated example:
                   value:
@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/single-exam'
+                $ref: ./raw/single-exam.schema.json
               examples:
                 Example Success Response:
                   value:
@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error-format'
+                $ref: ./raw/error-format.schema.json
               examples:
                 File type rejected example response:
                   value:
@@ -128,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error-format'
+                $ref: ./raw/error-format.schema.json
               examples:
                 Example Duplicate Exam Code Response:
                   value:
@@ -144,7 +144,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error-format'
+                $ref: ./raw/error-format.schema.json
       operationId: post-exam
       description: 'Create new Exam from .smex file. Request should be sent as *multipart/form-data*'
       requestBody:
@@ -153,7 +153,7 @@ paths:
             schema:
               type: 'null'
             examples: {}
-        description: 'The required Exam .smex file sent as a multipart request with the handle: ***file***'
+        description: 'The **required** Exam .smex file sent as a multipart request with the handle: ***file***'
   '/exam/{id}':
     get:
       summary: Retrieve Exam Details
@@ -162,13 +162,65 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/single-exam.schema.json
+              examples:
+                Sample Success Response:
+                  value:
+                    exam:
+                      id: 5eea55f4cb305a365eb98850
+                      examCode: SAMPLEEXAM
+                      examTitle: SAMPLE EXAM
+                      version: 1.0.0
+                      examiner: null
+                      visibility: false
+                      brandingImage: null
+                      brandingColor: null
+                      timeAdded: '2020-06-17T17:42:12.687+0000'
+                      fileSize: 4378
+                      examPaperFlow: Client Controlled
+                      showAnswersAfterExam: false
+                      showResultsAfterExam: true
+                      requirePreverification: false
+                      inExamFaceAutoProcturing: false
+                      inExamSoundAutoProcturing: false
+                      inExamLiveProcturing: false
+                      papers:
+                        - Driving Test: 20
+                        - Basic ICT: 20
+                      questionsToAnswer:
+                        - Driving Test: 10
+                        - Basic ICT: 10
+                      tags: null
+                      mappedExaminees: null
+                      examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
+                    code: OK
+                    status: true
       operationId: 'get-exam-:id'
       description: Get Exam details using either the Exam Code or Exam ID
       parameters: []
     delete:
       summary: Delete an Exam
-      tags: []
-      responses: {}
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  code:
+                    type: string
+              examples:
+                Sample Response: {}
+        '':
+          description: ''
       operationId: 'delete-exam-:id'
       description: Delete an Exam using either the Exam Code or Exam ID
     parameters:
@@ -178,13 +230,60 @@ paths:
         in: path
         required: true
         description: The Exam Code or Exam ID
-  /examinees:
+  '/examinees/{page}':
     get:
-      summary: Your GET endpoint
+      summary: Get Examinees
       tags:
         - examinees
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/paginated-examinee.schema.json
+              examples:
+                Example Response:
+                  value:
+                    maxPageCount: 25
+                    total: 1
+                    current: 1
+                    code: OK
+                    pages: 1
+                    examinees:
+                      - id: 5ec0b77182ae4f4d01109319
+                        examineeCode: RICH
+                        passcode: hidden
+                        firstName: Richboy
+                        middleName: Kaycee
+                        lastName: David
+                        dob:
+                          year: 2011
+                          month: 7
+                          day: 8
+                        gender: 1
+                        timeAdded: '2020-05-17T04:02:57.046+0000'
+                        imagePath: 'https://url/to/image'
+                        phoneNumber: ''
+                        email: ''
+                        mappedExams:
+                          - 5ed05438195e655f28c56f04
+                          - 5ed0ff34763d8c506f5c4b45
+                        addedGroups:
+                          - 5ec030da685c6765d6b440c3
+                        proctorApprovedExams: []
+                        proctorExemptedExams: null
+                        fullName: Richboy Kaycee David
+                    page: 1
+                    status: true
       operationId: get-examinees
+      description: 'This endpoint is paginated. For other pages you need to specify the ***page*** number path parameter.'
+    parameters:
+      - schema:
+          type: integer
+        name: page
+        in: path
+        description: An optional page number from which examinees will be retrieved
   '/exams/tag/{tag}/{page}':
     get:
       summary: Get Exams having Tag
@@ -196,7 +295,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/paginated-exam'
+                $ref: ./raw/paginated-exam.schema.json
         '406':
           description: Not Acceptable
           content:
@@ -290,7 +389,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/paginated-examinee'
+                $ref: ./raw/paginated-examinee.schema.json
               examples:
                 Example Success Response:
                   value:
@@ -391,35 +490,6 @@ components:
   schemas:
     exam:
       $ref: ./raw/exam.schema.json
-      description: Exam model
-      x-examples:
-        Example exam object:
-          id: 5eea55f4cb305a365eb98850
-          examCode: SAMPLEEXAM
-          examTitle: SAMPLE EXAM
-          version: 1.0.0
-          examiner: null
-          visibility: false
-          brandingImage: null
-          brandingColor: null
-          timeAdded: '2020-06-17T17:42:12.687+0000'
-          fileSize: 4378
-          examPaperFlow: Client Controlled
-          showAnswersAfterExam: false
-          showResultsAfterExam: true
-          requirePreverification: false
-          inExamFaceAutoProcturing: false
-          inExamSoundAutoProcturing: false
-          inExamLiveProcturing: false
-          papers:
-            - Driving Test: 20
-            - Basic ICT: 20
-          questionsToAnswer:
-            - Driving Test: 10
-            - Basic ICT: 10
-          tags: null
-          mappedExaminees: null
-          examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
     paginated-exam:
       $ref: ./raw/paginated-exam.schema.json
       description: Paginated Exam Model
@@ -463,7 +533,6 @@ components:
       $ref: ./raw/single-exam.schema.json
     error-format:
       $ref: ./raw/error-format.schema.json
-      description: The default error format
     single-examinee:
       $ref: ./raw/single-examinee.schema.json
       description: Models the response for a single examinee
@@ -474,4 +543,4 @@ components:
     api apiSecretKey:
       type: http
       scheme: basic
-      description: 'This uses a Basic Authentication scheme and is required for all API requests. User name is always ***api*** and password is yout API Secret Key.'
+      description: 'This uses a Basic Authentication scheme and is required for all API requests. User name is always ***api*** and password is your API Secret Key.'
