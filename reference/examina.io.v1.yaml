@@ -57,6 +57,8 @@ paths:
                     status: true
       operationId: get-exams
       description: 'Get all exams created in your organization. Response is paginated and is 1-based. You can specify the optional *page* path param to load exams in that page.'
+      security:
+        - api apiSecretKey: []
     parameters:
       - schema:
           type: string
@@ -154,6 +156,8 @@ paths:
               type: 'null'
             examples: {}
         description: 'The **required** Exam .smex file sent as a multipart request with the handle: ***file***'
+      security:
+        - api apiSecretKey: []
   '/exam/{id}':
     get:
       summary: Retrieve Exam Details
@@ -201,6 +205,8 @@ paths:
       operationId: 'get-exam-:id'
       description: Get Exam details using either the Exam Code or Exam ID
       parameters: []
+      security:
+        - api apiSecretKey: []
     delete:
       summary: Delete an Exam
       tags:
@@ -221,6 +227,8 @@ paths:
           description: ''
       operationId: 'delete-exam-:id'
       description: Delete an Exam using either the Exam Code or Exam ID
+      security:
+        - api apiSecretKey: []
     parameters:
       - schema:
           type: string
@@ -276,6 +284,8 @@ paths:
                     status: true
       operationId: get-examinees
       description: 'This endpoint is paginated. For other pages you need to specify the ***page*** number path parameter.'
+      security:
+        - api apiSecretKey: []
     parameters:
       - schema:
           type: integer
@@ -312,6 +322,8 @@ paths:
                     status: false
       operationId: get-exams-tag
       description: 'Find all exams having this tag. This is a paginated response and so an optional *page* number can be added to the request'
+      security:
+        - api apiSecretKey: []
     parameters:
       - schema:
           type: string
@@ -385,6 +397,8 @@ paths:
                     status: true
       operationId: get-exam-examId-examinees
       description: 'Retrieve Examinees mapped to the exam specified by the *examId*. This returns a paginated response and so an optional page number can be specified.'
+      security:
+        - api apiSecretKey: []
   '/exam/{examId}/tags':
     parameters:
       - schema:
@@ -475,6 +489,8 @@ paths:
         - schema:
             type: string
           in: query
+      security:
+        - api apiSecretKey: []
     delete:
       summary: Delete tags from an Exam
       tags:
@@ -498,7 +514,7 @@ paths:
           description: |-
             Unsupported Media Type
 
-            If the payload is not a of a supported type such as application/json
+            If the payload is not of a supported type such as application/json
           content:
             application/json:
               schema:
@@ -527,6 +543,8 @@ paths:
                 value:
                   - examina.io
         description: Send a JSON array payload with the tag(s) you want to remove from Exam.
+      security:
+        - api apiSecretKey: []
     get:
       summary: Get all tags for an Exam
       operationId: get-exam-examId-tags-tags
@@ -548,6 +566,8 @@ paths:
       description: This retrieves all the tags added to an Exam as an array.
       tags:
         - exams
+      security:
+        - api apiSecretKey: []
   '/examinee/{id}':
     parameters:
       - schema:
@@ -614,6 +634,8 @@ paths:
                     status: false
       operationId: get-examinee-id
       description: This allows fetching information about an Examinee using either the Examinee ID or the Examinee Code.
+      security:
+        - api apiSecretKey: []
     delete:
       summary: Delete an Examinee using ID or Code
       operationId: delete-examinee-id
@@ -648,6 +670,8 @@ paths:
       description: This allows deleting an Examinee using either the Examinee ID or the Examinee Code.
       tags:
         - examinees
+      security:
+        - api apiSecretKey: []
   '/examinee/{id}/exams/{page}':
     parameters:
       - schema:
@@ -715,6 +739,8 @@ paths:
         Get all the exams mapped to an Examinee using either the Examinee ID or Code as means of matching.
 
         This is a paginated response and allows specifying an optional page number as path parameter.
+      security:
+        - api apiSecretKey: []
   '/exam/{examId}/tags/all':
     parameters:
       - schema:
@@ -742,6 +768,8 @@ paths:
                     tags: []
       operationId: delete-exam-examId-tags-all
       description: ''
+      security:
+        - api apiSecretKey: []
 components:
   schemas: {}
   securitySchemes:
