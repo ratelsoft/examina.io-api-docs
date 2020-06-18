@@ -17,7 +17,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/paginated-exam.schema.json
+                $ref: ./raw/Paginated Exams
               examples:
                 Sample paginated example:
                   value:
@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/single-exam.schema.json
+                $ref: ./raw/Single Exam Response
               examples:
                 Example Success Response:
                   value:
@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/error-format.schema.json
+                $ref: ./raw/Error Format
               examples:
                 File type rejected example response:
                   value:
@@ -128,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/error-format.schema.json
+                $ref: ./raw/Error Format
               examples:
                 Example Duplicate Exam Code Response:
                   value:
@@ -144,7 +144,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/error-format.schema.json
+                $ref: ./raw/Error Format
       operationId: post-exam
       description: 'Create new Exam from .smex file. Request should be sent as *multipart/form-data*'
       requestBody:
@@ -165,7 +165,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/single-exam.schema.json
+                $ref: ./raw/Single Exam Response
               examples:
                 Sample Success Response:
                   value:
@@ -241,7 +241,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/paginated-examinee.schema.json
+                $ref: ./raw/Paginated Examinees
               examples:
                 Example Response:
                   value:
@@ -295,13 +295,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/paginated-exam.schema.json
+                $ref: ./raw/Paginated Exams
         '406':
           description: Not Acceptable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error-format'
+                $ref: ./raw/Error Format
               examples:
                 Sample Error:
                   value:
@@ -389,7 +389,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./raw/paginated-examinee.schema.json
+                $ref: ./raw/Paginated Examinees
               examples:
                 Example Success Response:
                   value:
