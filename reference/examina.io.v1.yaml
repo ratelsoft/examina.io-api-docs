@@ -582,6 +582,8 @@ paths:
                       desc: The requested resource does not exist.
                     status: false
       description: This allows deleting an Examinee using either the Examinee ID or the Examinee Code.
+      tags:
+        - examinees
   '/examinee/{id}/exams/{page}':
     parameters:
       - schema:
