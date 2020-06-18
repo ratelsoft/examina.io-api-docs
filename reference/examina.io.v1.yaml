@@ -1,0 +1,477 @@
+openapi: 3.0.0
+info:
+  title: examina.io
+  version: '1.0'
+  description: API endpoints to access and create data on examina.io
+servers:
+  - url: 'https://www.examina.io/api/v1'
+paths:
+  '/exams/{page}':
+    get:
+      summary: Get Exams
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated-exam'
+              examples:
+                Sample paginated example:
+                  value:
+                    maxPageCount: 25
+                    total: 1
+                    current: 1
+                    code: OK
+                    exams:
+                      - id: 5eea55f4cb305a365eb98850
+                        examCode: SAMPLEEXAM
+                        examTitle: SAMPLE EXAM
+                        version: 1.0.0
+                        examiner: null
+                        visibility: false
+                        brandingImage: null
+                        brandingColor: null
+                        timeAdded: '2020-06-17T17:42:12.687+0000'
+                        fileSize: 4378
+                        examPaperFlow: Client Controlled
+                        showAnswersAfterExam: false
+                        showResultsAfterExam: true
+                        requirePreverification: false
+                        inExamFaceAutoProcturing: false
+                        inExamSoundAutoProcturing: false
+                        inExamLiveProcturing: false
+                        papers:
+                          - Driving Test: 20
+                          - Basic ICT: 20
+                        questionsToAnswer:
+                          - Driving Test: 10
+                          - Basic ICT: 10
+                        tags: null
+                        mappedExaminees: null
+                        examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
+                    pages: 1
+                    page: 1
+                    status: true
+      operationId: get-exams
+      description: 'Get all exams created in your organization. Response is paginated and is 1-based. You can specify the optional *page* path param to load exams in that page.'
+    parameters:
+      - schema:
+          type: string
+        name: page
+        in: path
+        description: Optional page number to load.
+  /exam:
+    post:
+      summary: Create Exam
+      tags:
+        - exams
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/single-exam'
+              examples:
+                Example Success Response:
+                  value:
+                    exam:
+                      id: 5eea55f4cb305a365eb98850
+                      examCode: SAMPLEEXAM
+                      examTitle: SAMPLE EXAM
+                      version: 1.0.0
+                      examiner: null
+                      visibility: false
+                      brandingImage: null
+                      brandingColor: null
+                      timeAdded: '2020-06-17T17:42:12.687+0000'
+                      fileSize: 4378
+                      examPaperFlow: Client Controlled
+                      showAnswersAfterExam: false
+                      showResultsAfterExam: true
+                      requirePreverification: false
+                      inExamFaceAutoProcturing: false
+                      inExamSoundAutoProcturing: false
+                      inExamLiveProcturing: false
+                      papers:
+                        - Driving Test: 20
+                        - Basic ICT: 20
+                      questionsToAnswer:
+                        - Driving Test: 10
+                        - Basic ICT: 10
+                      tags: null
+                      mappedExaminees: null
+                      examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
+                    code: OK
+                    status: true
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-format'
+              examples:
+                File type rejected example response:
+                  value:
+                    code: ERR
+                    message: This file appears to be a Designer Project file. You need to export the exam first from the designer.
+                    error:
+                      code: '406'
+                      id: ERR_406
+                      desc: Incorrect parameter specified.
+                    status: false
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-format'
+              examples:
+                Example Duplicate Exam Code Response:
+                  value:
+                    code: ERR
+                    message: "Another exam already exists with the Exam Code - 'SAMPLEEXAM'"
+                    error:
+                      code: '103'
+                      id: ERR_103
+                      desc: Invalid state or duplicate request.
+                    status: false
+        '500':
+          description: Internal Server Error. If any failure occurred while pushing file to file server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-format'
+      operationId: post-exam
+      description: 'Create new Exam from .smex file. Request should be sent as *multipart/form-data*'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: 'null'
+            examples: {}
+        description: 'The required Exam .smex file sent as a multipart request with the handle: ***file***'
+  '/exam/{id}':
+    get:
+      summary: Retrieve Exam Details
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+      operationId: 'get-exam-:id'
+      description: Get Exam details using either the Exam Code or Exam ID
+      parameters: []
+    delete:
+      summary: Delete an Exam
+      tags: []
+      responses: {}
+      operationId: 'delete-exam-:id'
+      description: Delete an Exam using either the Exam Code or Exam ID
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: The Exam Code or Exam ID
+  /examinees:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - examinees
+      responses: {}
+      operationId: get-examinees
+  '/exams/tag/{tag}/{page}':
+    get:
+      summary: Get Exams having Tag
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated-exam'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-format'
+              examples:
+                Sample Error:
+                  value:
+                    code: ERR
+                    message: You can only query for exams one tag at a time. Comma is not allowed here
+                    error:
+                      code: '406'
+                      id: ERR_406
+                      desc: Incorrect parameter specified.
+                    status: false
+      operationId: get-exams-tag
+      description: 'Find all exams having this tag. This is a paginated response and so an optional *page* number can be added to the request'
+    parameters:
+      - schema:
+          type: string
+        name: tag
+        in: path
+        required: true
+        description: The exam tag to use for the search
+      - schema:
+          type: integer
+        name: page
+        in: path
+        description: The page number to load.
+  '/exam/{examId}/tags':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: The Exam ID for the Exam whose tags we are trying to receive
+    get:
+      summary: Get all tags for an Exam
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: boolean
+                  code:
+                    type: string
+              examples:
+                Example Response:
+                  value:
+                    code: OK
+                    status: true
+                    tags:
+                      - ratelsoft
+                      - examina.io
+                      - ratelsoft inc
+      operationId: get-exam-examId-tags
+      description: This retrieves all the tags added to an Exam as an array.
+  '/exam/{examId}/examinees/{page}':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: The Exam ID for the Exam.
+      - schema:
+          type: string
+        name: page
+        in: path
+        description: The page number to retrieve.
+    get:
+      summary: Get Examinees mapped to this Exam
+      tags:
+        - exams
+        - examinees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated-examinee'
+              examples:
+                Example Success Response:
+                  value:
+                    maxPageCount: 25
+                    total: 1
+                    current: 1
+                    code: OK
+                    pages: 1
+                    examinees:
+                      - id: 5ec0b77182ae4f4d01109319
+                        examineeCode: RICH
+                        passcode: hidden
+                        firstName: Richboy
+                        middleName: Kaycee
+                        lastName: David
+                        dob:
+                          year: 2011
+                          month: 7
+                          day: 8
+                        gender: 1
+                        timeAdded: '2020-05-17T04:02:57.046+0000'
+                        imagePath: 'https://url/to/image'
+                        phoneNumber: ''
+                        email: ''
+                        mappedExams:
+                          - 5ed05438195e655f28c56f04
+                          - 5ed0ff34763d8c506f5c4b45
+                        addedGroups:
+                          - 5ec030da685c6765d6b440c3
+                        proctorApprovedExams: []
+                        proctorExemptedExams: null
+                        fullName: Richboy Kaycee David
+                    page: 1
+                    status: true
+      operationId: get-exam-examId-examinees
+      description: 'Retrieve Examinees mapped to the exam specified by the *examId*. This returns a paginated response and so an optional page number can be specified.'
+  '/exam/{examId}/tags/{tags}':
+    parameters:
+      - schema:
+          type: string
+        name: tags
+        in: path
+        required: true
+        description: A comma separated list of tags
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: The Exam ID of the target Exam
+    post:
+      summary: Add tags to an Exam
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: boolean
+                  code:
+                    type: string
+      operationId: post-exam-examId-tags-tags
+      description: "Not the conventional POST request. However, this allows an easy mode of adding comma separated tags to an Exam. \n\nThis returns an array of all the tags currently added to the exam. Duplicate tags are ignored. Tags can have spaces."
+    delete:
+      summary: Delete tags from an Exam
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: boolean
+                  code:
+                    type: string
+                  '':
+                    type: string
+      operationId: delete-exam-examId-tags-tags
+      description: "This allows an easy mode of deleting tags from an Exam. This returns a response with all the tags currently available in the Exam after the delete. \n\nNo error is reported if a tag is being deleted that wasn't previously added to the Exam."
+components:
+  schemas:
+    exam:
+      $ref: ./raw/exam.schema.json
+      description: Exam model
+      x-examples:
+        Example exam object:
+          id: 5eea55f4cb305a365eb98850
+          examCode: SAMPLEEXAM
+          examTitle: SAMPLE EXAM
+          version: 1.0.0
+          examiner: null
+          visibility: false
+          brandingImage: null
+          brandingColor: null
+          timeAdded: '2020-06-17T17:42:12.687+0000'
+          fileSize: 4378
+          examPaperFlow: Client Controlled
+          showAnswersAfterExam: false
+          showResultsAfterExam: true
+          requirePreverification: false
+          inExamFaceAutoProcturing: false
+          inExamSoundAutoProcturing: false
+          inExamLiveProcturing: false
+          papers:
+            - Driving Test: 20
+            - Basic ICT: 20
+          questionsToAnswer:
+            - Driving Test: 10
+            - Basic ICT: 10
+          tags: null
+          mappedExaminees: null
+          examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
+    paginated-exam:
+      $ref: ./raw/paginated-exam.schema.json
+      description: Paginated Exam Model
+      x-examples:
+        Paginated Exam Sample:
+          maxPageCount: 25
+          total: 1
+          current: 1
+          code: OK
+          exams:
+            - id: 5eea55f4cb305a365eb98850
+              examCode: SAMPLEEXAM
+              examTitle: SAMPLE EXAM
+              version: 1.0.0
+              examiner: null
+              visibility: false
+              brandingImage: null
+              brandingColor: null
+              timeAdded: '2020-06-17T17:42:12.687+0000'
+              fileSize: 4378
+              examPaperFlow: Client Controlled
+              showAnswersAfterExam: false
+              showResultsAfterExam: true
+              requirePreverification: false
+              inExamFaceAutoProcturing: false
+              inExamSoundAutoProcturing: false
+              inExamLiveProcturing: false
+              papers:
+                - Driving Test: 20
+                - Basic ICT: 20
+              questionsToAnswer:
+                - Driving Test: 10
+                - Basic ICT: 10
+              tags: null
+              mappedExaminees: null
+              examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
+          pages: 1
+          page: 1
+          status: true
+    single-exam:
+      $ref: ./raw/single-exam.schema.json
+    error-format:
+      $ref: ./raw/error-format.schema.json
+      description: The default error format
+    single-examinee:
+      $ref: ./raw/single-examinee.schema.json
+      description: Models the response for a single examinee
+    paginated-examinee:
+      $ref: ./raw/paginated-examinee.schema.json
+      description: Models the response for paginated examinees
+  securitySchemes:
+    api apiSecretKey:
+      type: http
+      scheme: basic
+      description: 'This uses a Basic Authentication scheme and is required for all API requests. User name is always ***api*** and password is yout API Secret Key.'

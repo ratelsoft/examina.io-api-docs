@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Paginated Examinee schema",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "status": {
+      "type": "boolean"
+    },
+    "examinees": {
+      "type": "array",
+      "items": {
+        "$ref": "./examinee.schema.json"
+      }
+    },
+    "maxPageCount": {
+      "type": "integer",
+      "description": "The maximum number of items that can be retrieved per page."
+    },
+    "total": {
+      "type": "integer",
+      "description": "The total elements available."
+    },
+    "current": {
+      "type": "integer",
+      "description": "The total number retrieved for the current page."
+    },
+    "pages": {
+      "type": "integer",
+      "description": "The number of pages that could be retrieved."
+    },
+    "page": {
+      "type": "integer",
+      "description": "The current page that was requested from the server."
+    }
+  },
+  "required": [
+    "code",
+    "status",
+    "examinees",
+    "maxPageCount",
+    "total",
+    "current",
+    "pages",
+    "page"
+  ]
+}

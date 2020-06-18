@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Exam schema",
+  "properties": {
+    "exam": {
+      "type": "object",
+      "required": [
+        "id",
+        "examCode",
+        "examTitle",
+        "version",
+        "examiner",
+        "visibility",
+        "brandingImage",
+        "brandingColor",
+        "timeAdded",
+        "fileSize",
+        "examPaperFlow",
+        "showAnswersAfterExam",
+        "showResultsAfterExam",
+        "requirePreverification",
+        "inExamFaceAutoProcturing",
+        "inExamSoundAutoProcturing",
+        "inExamLiveProcturing",
+        "papers",
+        "questionsToAnswer",
+        "tags",
+        "mappedExaminees",
+        "examLink"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "examCode": {
+          "type": "string"
+        },
+        "examTitle": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "examiner": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "required": [
+            "examinerName"
+          ],
+          "properties": {
+            "examinerName": {
+              "type": "string"
+            }
+          }
+        },
+        "visibility": {
+          "type": "boolean"
+        },
+        "brandingImage": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "brandingColor": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "timeAdded": {
+          "type": "string"
+        },
+        "fileSize": {
+          "type": "integer"
+        },
+        "examPaperFlow": {
+          "type": "string"
+        },
+        "showAnswersAfterExam": {
+          "type": "boolean"
+        },
+        "showResultsAfterExam": {
+          "type": "boolean"
+        },
+        "requirePreverification": {
+          "type": "boolean"
+        },
+        "inExamFaceAutoProcturing": {
+          "type": "boolean"
+        },
+        "inExamSoundAutoProcturing": {
+          "type": "boolean"
+        },
+        "inExamLiveProcturing": {
+          "type": "boolean"
+        },
+        "papers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "questionCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "questionCount"
+            ]
+          }
+        },
+        "questionsToAnswer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "questionCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "questionCount"
+            ]
+          }
+        },
+        "tags": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "mappedExaminees": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "examLink": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "exam"
+  ]
+}

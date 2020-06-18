@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "This schema models what is returned when a single examinee detail is requested. Also after an examinee is created",
+  "properties": {
+    "examinee": {
+      "$ref": "./examinee.schema.json"
+    },
+    "status": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "examinee",
+    "status",
+    "code"
+  ]
+}
