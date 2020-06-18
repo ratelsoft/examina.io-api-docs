@@ -487,58 +487,7 @@ paths:
       operationId: delete-exam-examId-tags-tags
       description: "This allows an easy mode of deleting tags from an Exam. This returns a response with all the tags currently available in the Exam after the delete. \n\nNo error is reported if a tag is being deleted that wasn't previously added to the Exam."
 components:
-  schemas:
-    exam:
-      $ref: ./raw/exam.schema.json
-    paginated-exam:
-      $ref: ./raw/paginated-exam.schema.json
-      description: Paginated Exam Model
-      x-examples:
-        Paginated Exam Sample:
-          maxPageCount: 25
-          total: 1
-          current: 1
-          code: OK
-          exams:
-            - id: 5eea55f4cb305a365eb98850
-              examCode: SAMPLEEXAM
-              examTitle: SAMPLE EXAM
-              version: 1.0.0
-              examiner: null
-              visibility: false
-              brandingImage: null
-              brandingColor: null
-              timeAdded: '2020-06-17T17:42:12.687+0000'
-              fileSize: 4378
-              examPaperFlow: Client Controlled
-              showAnswersAfterExam: false
-              showResultsAfterExam: true
-              requirePreverification: false
-              inExamFaceAutoProcturing: false
-              inExamSoundAutoProcturing: false
-              inExamLiveProcturing: false
-              papers:
-                - Driving Test: 20
-                - Basic ICT: 20
-              questionsToAnswer:
-                - Driving Test: 10
-                - Basic ICT: 10
-              tags: null
-              mappedExaminees: null
-              examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
-          pages: 1
-          page: 1
-          status: true
-    single-exam:
-      $ref: ./raw/single-exam.schema.json
-    error-format:
-      $ref: ./raw/error-format.schema.json
-    single-examinee:
-      $ref: ./raw/single-examinee.schema.json
-      description: Models the response for a single examinee
-    paginated-examinee:
-      $ref: ./raw/paginated-examinee.schema.json
-      description: Models the response for paginated examinees
+  schemas: {}
   securitySchemes:
     api apiSecretKey:
       type: http
