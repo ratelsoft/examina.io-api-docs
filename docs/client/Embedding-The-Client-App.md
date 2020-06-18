@@ -4,51 +4,51 @@ tags: [client]
 
 # Embedding The Client App on your Website
 
-If you're reading this, I'm guessing you want to be able to allow your students (or examinees as we call them) to be able to take examinations directly from your website without having to send them links to examina.io.
+If you're reading this, I'm guessing you want to be able to allow your students (or examinees as we call them) to be able to take examinations directly from your website without having to send them links to [examina.io](https://www.examina.io).
 
 Well, you're at the right place, so read on...
 
 ## Prerequisites
 
-First, this sounds absurd trying to say this since well, you're reading this, however, it has to be said. You need your own website to get this working. Technically, you can also host this from your own system (*more on this later*) but it may not be much use if your plan is go get people to take exams remotely.
+First, this sounds absurd trying to say this since well, you're reading this. However, it has to be said. You need your own website to get this working. Technically, you can also get this working from your own system using localhost (*more on this later*) but it may not be of much use if your plan is go get people to take assessments remotely.
 
 Secondly, you need to know basic HTML and understand how to make little changes to a static webpage.
 
 Thirdly, you need to have [created an account](https://www.examina.io/register) on examina.io and subscribed to a plan that supports this feature. All paid plans support this feature. So if you've not yet created an account or subscribed to a paid plan you can go ahead now and get that done first, we'll wait for you.
 
-Done already? Nice!
+Done already? Oh nice, let's continue then...
 
 ## So What's Next?
 
-Next you login to your account and go to `Settings`. You can find the option from the Side bar.
+Next you login to your account and go to `Settings`. You can find the link from the Side bar.
 
 Now, for embedding the client App, you will need to do the following things:
 
 ### Create an API Public Key
 
-If you've not already done so, you'll need to create an API public Key (if you haven't already) by clicking on the reload icon to the right.
+If you've not already done so, you'll need to create an API public Key by clicking on the reload icon to the right as annotated below.
 
 ![API Section on the Settings Page](../../assets/images/api_section_1.jpg)
 
-> &#x26a0;&#xfe0f; Note that if you change your public key all sites using that key would need to be updated.
+> &#x26a0;&#xfe0f; Note that if you change your public key, all sites using that key would need to be updated.
 
-For simple embedding, you do not need your API secret key. You only need that when making calls to our API servers. If however, you need to auto login examinees, you will need to also generate an API secret keey. More on that later.
+For simple embedding, you do not need your API secret key. You only need that when making calls to our API servers. If however, you need to auto login examinees, you will need to also generate an API secret key. More on that later.
 
-### Approve your domain for hosting
+### Approve your domain for Embedding
 
 Add the domain which you're using to host the exams on the list of approved domains. 
 
-To add the domain, enter the domain URL in the text field and click on the ***Add Domain*** button.
+To add a domain, enter the domain URL (*without the protocol part*) in the text field and click on the ***Add Domain*** button.
 
 ![API Section on the Settings Page](../../assets/images/domain_section.jpg)
 
 In my case, I am hosting the exam on `exam.richboy.me` so I added it.
 
-You can also delete domains which you no longer want to be allowed.
+You can also delete domains which you no longer want to be allowed by clicking the button with the trash icon beside the domain name.
 
 > If you're testing locally, you can add `localhost`, `127.0.0.1` or any IP address which you normally test with on the address bar. **You do not need to specify the port number on the domain**.
 
-> &#x26a0;&#xfe0f; Remember to remove all testing domains when done as they can be security risks. Due to localhost domains not being exclusive, others can also be able to embed your exams on their own testing servers.
+> &#x26a0;&#xfe0f; Remember to remove all testing domains when done as they can be security risks. Due to localhost domains not being exclusive, others would also be able to embed your exams on their own testing servers if you leave them.
 
 ### Include the widget script on your webpage.
 
@@ -71,7 +71,7 @@ Let's start with a simple HTML 5 webpage and we build up from there.
 </html>
 ```
 
-As you might notice, there's nothing fancy about the code above. Just some dummy hello world page. Next we include the widget script tag to the `head` section as show below:
+As you might notice, there's nothing fancy about the code above. Just some dummy hello world page. Next we include the widget script tag to the `head` section as shown below:
 
 ```html
 ...
@@ -87,11 +87,11 @@ You need to replace `{YOUR_PUBLIC_API_KEY}` in the code above with your API Publ
 
 > The client widget script requires your API Public Key or the script would not be loaded on the page.
 
-The next thing you need to do is to add an anchor tag with the link to the exam and the class `examina-io-client-widget`. If Javascript is enabled on page, the achor tag will be replaced with an iframe that loads the exam page. You can get the link to an Exam from the Manager application as show below or using an API endpoint.
+The next thing you need to do is to add an anchor tag with the link to the exam and the class `examina-io-client-widget`. If Javascript is enabled on the page, the achor tag will be replaced with an iframe that loads the exam page. You can get the link to an Exam from the Manager application as show below or by using an API endpoint.
 
 ![Getting an Exam Link](../../assets/images/manager_exam_details.jpg)
 
-If you click to open the Exam in another tab, you can get the link from the address bar. The code snippet below shows how one may include the exam link on their website. You can design around it and apply a few more styles which we will talk about next.
+If you click to open the Exam in another tab, you can get the link from the address bar. The code snippet below shows how one may include the exam link on their website. You can design around it and apply a few more attributes which we will talk about next.
 
 ```html
 ...
@@ -110,15 +110,15 @@ You should replace `{THE_EXAM_LINK}` with the exam link you copied from the Mana
 
 Still reading on? I like your curiosity...&#128521;
 
-So, if we just leave the widget as is, it will try to math the dimensions of the page and automatically adjust when the page is resized. That may not be for every one so if for instance you want it to be of a fixed dimension, you need to specify the `data-examina-io-height` and `data-examina-io-width` attributes on the anchor tag with the dimension you want.
+So, if we just leave the widget as is, it will try to match the dimensions of the page and automatically adjust when the page is resized. That may not be for every one so if for instance you want it to be of a fixed dimension, you need to specify the `data-examina-io-height` and `data-examina-io-width` attributes on the anchor tag with the dimensions you want.
 
-> If you only specify the dimension on one direction, the widget will automatically match the window height on the missing direction and adjust accordingly on resize.
+> If you only specify the dimension in one direction, the widget will automatically match the window dimension on the missing attribute's direction and adjust accordingly on resize.
 
 > Also note that the widget will assume it has full screen control on any dimension that is unspecified and will remove all scrolling functionality from the body tag for that direction.
 
 You can also specify negative dimensions. If you specify a negative dimension, the widget will always adjust itself to fit that window size in that dimension minus the dimension you specify. 
 
-You can also specify the value `auto` to instruct the widget to so nothing on the dimension specified. This is important if you want to style the widget dimensions your self.
+You can also specify the value `auto` to instruct the widget to do nothing on the dimension specified. This is important if you want to style the widget dimension your self.
 
 As an example:
 
@@ -131,22 +131,22 @@ As an example:
 ...
 ```
 
-From the above, `data-examina-io-height` instructs the widget to always set it's height of the height of the window minus 50 pixels while `data-examina-io-width` instructs the widget to do nothing about the widget even if the window resizes.
+From the above, `data-examina-io-height` instructs the widget to always set it's height of the height of the window minus 50 pixels while `data-examina-io-width` instructs the widget to do nothing about the widget width even if the window resizes.
 
-> Note that setting either value to `auto` does not imply that the widget will be sized to 0px. Browsers have default sizing values for iframe and the default value from the browser will be applied until to style it yourself.
+> Note that setting either value to `auto` does not imply that the widget will be sized to 0 pixels. Browsers have default sizing values for iframe and the default value from the browser will be applied if you do not style it yourself.
 
 #### Recap for widget dimensions
 
 So to recap,
 
-1. If you fail to set `data-examina-io-height` or `data-examina-io-width`, the widget will take the size of the screen in the direction of the attribute you did not specify as well as setting the body tag's `overflow` style to `hidden` in the missing attribute's direction. If both are not specified, the widget will match both dimensions of the screen. For any missing dimension, the widget will automatically adjust to resizing in that direction.
+1. If you fail to set `data-examina-io-height` or `data-examina-io-width`, the widget will take the size of the window in the direction of the attribute you did not specify as well as setting the body tag's `overflow` style to `hidden` in the missing attribute's direction. If both are not specified, the widget will match both dimensions of the screen. For any missing dimension, the widget will automatically adjust by responding to resizing events in that direction.
 
 2. If you set a negative dimension, the widget will subtract that dimension from the size of the window and set itself to what is left from the subtraction.
 
-3. If you set either attribute to `auto`, the widget will not manage the dimension for that attribute. You will have to do the management yourself.
+3. If you set either attribute to `auto`, the widget will be set to the default size configured by the browser and would not manage the dimension for that attribute. You will have to do the management yourself.
 
 
-#### Simple Example Full Snippet
+#### Simple Embedding Example Full Snippet
 
 ```html
 <!DOCTYPE html>
@@ -169,13 +169,13 @@ That's all folks!
 
 ## Advanced Section (Optional)
 
-So let's say you want to do something fancy and do not want the examinees to login (*again*) on the exam page before starting the exam. This can be useful if your website already has an authentication/login page which they've already gone through, it can be frustrating having to login yet again.
+So let's say you want to do something fancy, say you do not want the examinees to login (*again*) on the exam page before starting the exam. This can be useful if your website already has an authentication/login page which they've already gone through, it can be frustrating having to login yet again.
 
-For this you will need your API Secret key. You can generate it from same place you generated the API Public Key. Please keep your API Secret key safe and hidden or your data on examina.io can be compromised.
+For this you will need your API Secret key. You can generate it from same place you generated the API Public Key. **Please keep your API Secret key safe and hidden or your data on examina.io can be compromised**.
 
 For this example, we will use the examina.io API endpoints. I will use a simple PHP script to demonstrate this.
 
-But First, in order to auto login student, you will need to create a token on examina.io for the student and for the current exam and add the token as well as other supported options to the link in the anchor tag. An example is shown below:
+But First, in order to auto login a student, you will need to create a login token on examina.io for the student and for the current exam and add the token as well as other supported options to the link in the anchor tag. An example is shown below:
 
 ```html
 ...
@@ -190,9 +190,9 @@ The additional options on the anchor tag are:
 3. `examineeId`: This can be used as a substitute for `examineeCode` and is the global unique identifier for the examinee. Only one of `examineeCode` and `examineeId` is required with `examineeCode` calling dibs if both are present.
 4. `token`: The login token received from the API. 
 
-From the code, you will need to replace `{CODE}` with the Examinee's Unique Code and `{TOKEN}` with the token received from the server.
+From the snippet above, you will need to replace `{CODE}` with the Examinee's Unique Code and `{TOKEN}` with the token received from the server.
 
-Here's a simple PHP snippet showing how to get a login token and auto login an examinee. For the examinee code, I am assuming it has been set in the sessions global variable from maybe the time they logged in to your site.
+Here's a simple PHP snippet showing how to get a login token and auto login an examinee. For the examinee code, I am assuming it has been set in the sessions global variable from, maybe, the time they logged into your site.
 
 ```php
 <?php
@@ -212,12 +212,12 @@ curl_setopt(
         'Authorization: Basic ' . base64_encode("api:$apiSecret")
     )
 );
-$request = curl_exec($ch);
+$response = curl_exec($ch);
 curl_close($ch);
 
 $url = '';
-if ($request) {
-    $result = json_decode($request, true);
+if ($response) {
+    $result = json_decode($response, true);
     if ($result && $result['status']) {
         $token = $result['token'];
         $url = "?autologin=true&examineeCode=$examineeCode&token=$token";
@@ -239,4 +239,6 @@ if ($request) {
 </html>
 ```
 
-Remember to replace `{YOUR_API_SECRET_KEY}` with your API Secret key. For more information please [visit the API docs](https://stoplight.io/p/docs/gh/ratelsoft/examina.io-api-docs).
+Remember to replace `{YOUR_API_SECRET_KEY}` with your API Secret key. 
+
+For more information please [visit the API docs](https://stoplight.io/p/docs/gh/ratelsoft/examina.io-api-docs).
