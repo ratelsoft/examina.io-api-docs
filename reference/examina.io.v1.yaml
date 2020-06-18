@@ -324,45 +324,6 @@ paths:
         name: page
         in: path
         description: The page number to load.
-  '/exam/{examId}/tags':
-    parameters:
-      - schema:
-          type: string
-        name: examId
-        in: path
-        required: true
-        description: The Exam ID for the Exam whose tags we are trying to receive
-    get:
-      summary: Get all tags for an Exam
-      tags:
-        - exams
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  tags:
-                    type: array
-                    items:
-                      type: string
-                  status:
-                    type: boolean
-                  code:
-                    type: string
-              examples:
-                Example Response:
-                  value:
-                    code: OK
-                    status: true
-                    tags:
-                      - ratelsoft
-                      - examina.io
-                      - ratelsoft inc
-      operationId: get-exam-examId-tags
-      description: This retrieves all the tags added to an Exam as an array.
   '/exam/{examId}/examinees/{page}':
     parameters:
       - schema:
@@ -424,14 +385,8 @@ paths:
                     status: true
       operationId: get-exam-examId-examinees
       description: 'Retrieve Examinees mapped to the exam specified by the *examId*. This returns a paginated response and so an optional page number can be specified.'
-  '/exam/{examId}/tags/{tags}':
+  '/exam/{examId}/tags':
     parameters:
-      - schema:
-          type: string
-        name: tags
-        in: path
-        required: true
-        description: A comma separated list of tags
       - schema:
           type: string
         name: examId
@@ -448,18 +403,78 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  tags:
-                    type: array
-                    items:
-                      type: string
-                  status:
-                    type: boolean
-                  code:
-                    type: string
+                $ref: ./raw/Exam Tags Response
+              examples:
+                Example Response:
+                  value:
+                    code: OK
+                    status: true
+                    tags:
+                      - ratelsoft
+                      - examina.io
+                      - ratelsoft inc
+        '406':
+          description: |-
+            Not Acceptable
+
+            This response is returned if an empty tag or a tag with commas and/or path separators are found in any of the tags.
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format
+              examples:
+                Sample Response:
+                  value:
+                    code: ERR
+                    message: Tags cannot contain commas. Process failed.
+                    error:
+                      code: '406'
+                      id: ERR_406
+                      desc: Incorrect parameter specified.
+                    status: false
+        '415':
+          description: |-
+            Unsupported Media Type
+
+            If payload is not of a supported type such as application/json
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format
+              examples:
+                Sample Response:
+                  value:
+                    code: ERR
+                    message: 'text/plain;charset=UTF-8 media type is not supported. Supported media types are application/json, application/hal+json, application/schema+json, application/json-patch+json, application/merge-patch+json, application/x-spring-data-verbose+json, application/x-spring-data-compact+json, application/octet-stream, application/*+json, text/uri-list, text/plain, application/xml, text/xml, application/x-www-form-urlencoded, application/alps+json, application/*+xml, multipart/form-data, multipart/mixed, */*'
+                    error:
+                      code: '415'
+                      id: ERR_415
+                      desc: The request or request parameter is invalid or unrecognizable.
+                    status: false
       operationId: post-exam-examId-tags-tags
-      description: "Not the conventional POST request. However, this allows an easy mode of adding comma separated tags to an Exam. \n\nThis returns an array of all the tags currently added to the exam. Duplicate tags are ignored. Tags can have spaces."
+      description: |-
+        This allows adding tags to an Exam. Tagging an exam gives you flexibility while working with exams. You can later request for exams with a specific tag.
+
+        This returns an array of all the tags currently added to the exam. Duplicate tags are ignored. Tags can have spaces but **no** commas or path separators.
+
+        If an error is discovered in any of the tags, none would be added.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Example Payload:
+                value:
+                  - ratelsoft inc
+                  - examina.io
+        description: 'Send a JSON array payload with the tags you want to add to the Exam. This works as a transaction in that if there is any error in one tag, none will be added.'
+      parameters:
+        - schema:
+            type: string
+          in: query
     delete:
       summary: Delete tags from an Exam
       tags:
@@ -470,20 +485,67 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  tags:
-                    type: array
-                    items:
-                      type: string
-                  status:
-                    type: boolean
-                  code:
-                    type: string
-                  '':
-                    type: string
+                $ref: ./raw/Exam Tags Response
+              examples:
+                Example Response:
+                  value:
+                    code: OK
+                    status: true
+                    tags:
+                      - ratelsoft
+                      - ratelsoft inc
+        '415':
+          description: |-
+            Unsupported Media Type
+
+            If the payload is not a of a supported type such as application/json
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format
+              examples:
+                Samle Response:
+                  value:
+                    code: ERR
+                    message: 'text/plain;charset=UTF-8 media type is not supported. Supported media types are application/json, application/hal+json, application/schema+json, application/json-patch+json, application/merge-patch+json, application/x-spring-data-verbose+json, application/x-spring-data-compact+json, application/octet-stream, application/*+json, text/uri-list, text/plain, application/xml, text/xml, application/x-www-form-urlencoded, application/alps+json, application/*+xml, multipart/form-data, multipart/mixed, */*'
+                    error:
+                      code: '415'
+                      id: ERR_415
+                      desc: The request or request parameter is invalid or unrecognizable.
+                    status: false
       operationId: delete-exam-examId-tags-tags
-      description: "This allows an easy mode of deleting tags from an Exam. This returns a response with all the tags currently available in the Exam after the delete. \n\nNo error is reported if a tag is being deleted that wasn't previously added to the Exam."
+      description: "This allows you to remove tags from an Exam. This returns a response with all the tags currently available in the Exam after the delete. \n\nNo error is reported if a specified tag does not exist as part of the Exam tags.\n\nTags can have spaces but **no** commas or path separators."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Sample Payload:
+                value:
+                  - examina.io
+        description: Send a JSON array payload with the tag(s) you want to remove from Exam.
+    get:
+      summary: Get all tags for an Exam
+      operationId: get-exam-examId-tags-tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Exam Tags Response
+              examples:
+                Example Response:
+                  value:
+                    code: OK
+                    status: true
+                    tags:
+                      - ratelsoft
+                      - ratelsoft inc
+      description: This retrieves all the tags added to an Exam as an array.
   '/examinee/{id}':
     parameters:
       - schema:
@@ -651,6 +713,33 @@ paths:
         Get all the exams mapped to an Examinee using either the Examinee ID or Code as means of matching.
 
         This is a paginated response and allows specifying an optional page number as path parameter.
+  '/exam/{examId}/tags/all':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: The exam ID for the target Exam.
+    delete:
+      summary: Delete all tags from an Exam
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Exam Tags Response
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    status: true
+                    tags: []
+      operationId: delete-exam-examId-tags-all
+      description: ''
 components:
   schemas: {}
   securitySchemes:
