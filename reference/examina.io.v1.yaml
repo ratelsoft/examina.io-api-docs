@@ -3,6 +3,11 @@ info:
   title: examina.io
   version: '1.0'
   description: API endpoints to access and create data on examina.io
+  contact:
+    name: examina.io
+    url: 'https://www.examina.io/#contact'
+    email: info@examina.io
+  termsOfService: 'https://www.examina.io/terms'
 servers:
   - url: 'https://www.examina.io/api/v1'
 paths:

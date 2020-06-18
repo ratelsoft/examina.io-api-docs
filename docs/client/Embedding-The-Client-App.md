@@ -4,7 +4,7 @@ tags: [client]
 
 # Embedding The Client App on your Website
 
-If you're reading this, I'm guessing you want to be able to allow your students (or examinees as we call them) to be able to take examinations directly from your website without having to send them links to [examina.io](https://www.examina.io).
+If you're reading this, I'm guessing you want to be able to allow your students (or examinees as we call them) to be able to take assessments directly from your website without having to send them links to [examina.io](https://www.examina.io).
 
 Well, you're at the right place, so read on...
 
@@ -36,7 +36,7 @@ For simple embedding, you do not need your API secret key. You only need that wh
 
 ### Approve your domain for Embedding
 
-Add the domain which you're using to host the exams on the list of approved domains. 
+Next you'll need to add the domain which you'll be using to host the exams to the list of approved domains. 
 
 To add a domain, enter the domain URL (*without the protocol part*) in the text field and click on the ***Add Domain*** button.
 
