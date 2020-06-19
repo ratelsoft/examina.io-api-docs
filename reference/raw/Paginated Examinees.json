@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "description": "Paginated Exam schema",
+  "description": "Paginated Examinee schema",
   "properties": {
     "code": {
       "type": "string"
@@ -9,10 +9,10 @@
     "status": {
       "type": "boolean"
     },
-    "exams": {
+    "examinees": {
       "type": "array",
       "items": {
-        "$ref": "./exam.schema.json"
+        "$ref": "./Base Examinee Schema.json"
       }
     },
     "maxPageCount": {
@@ -39,7 +39,7 @@
   "required": [
     "code",
     "status",
-    "exams",
+    "examinees",
     "maxPageCount",
     "total",
     "current",

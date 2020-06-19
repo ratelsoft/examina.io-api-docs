@@ -44,9 +44,9 @@ To add a domain, enter the domain URL (*without the protocol part*) in the text 
 
 In my case, I am hosting the exam on `exam.richboy.me` so I added it.
 
-You can also delete domains which you no longer want to be allowed by clicking the button with the trash icon beside the domain name.
+You can also delete domains which you no longer want to be approved by clicking the red button with the trash icon beside the domain name.
 
-> If you're testing locally, you can add `localhost`, `127.0.0.1` or any IP address which you normally test with on the address bar. **You do not need to specify the port number on the domain**.
+> If you're testing locally, you can add `localhost`, `127.0.0.1` or any hostname or IP address which you normally test with and input on the address bar. **You do not need to specify the port number on the domain**.
 
 > &#x26a0;&#xfe0f; Remember to remove all testing domains when done as they can be security risks. Due to localhost domains not being exclusive, others would also be able to embed your exams on their own testing servers if you leave them.
 

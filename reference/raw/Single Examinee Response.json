@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "description": "This schema models what is returned when a single exam detail is requested. Also after an exam is created",
+  "description": "This schema models what is returned when a single examinee detail is requested. Also after an examinee is created",
   "properties": {
-    "exam": {
-      "$ref": "./exam.schema.json"
+    "examinee": {
+      "$ref": "./Base Examinee Schema.json"
     },
     "status": {
       "type": "boolean"
@@ -14,7 +14,7 @@
     }
   },
   "required": [
-    "exam",
+    "examinee",
     "status",
     "code"
   ]
