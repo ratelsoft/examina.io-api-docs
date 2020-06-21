@@ -28,7 +28,7 @@ Now, for embedding the client App, you will need to do the following things:
 
 If you've not already done so, you'll need to create an API public Key by clicking on the reload icon to the right as annotated below.
 
-![API Section on the Settings Page](../../assets/images/api_section_1.jpg)
+![API Section on the Settings Page](../../assets/images/embedding-client-app/api_section_1.jpg)
 
 > &#x26a0;&#xfe0f; Note that if you change your public key, all sites using that key would need to be updated.
 
@@ -40,7 +40,7 @@ Next you'll need to add the domain which you'll be using to host the exams to th
 
 To add a domain, enter the domain URL (*without the protocol part*) in the text field and click on the ***Add Domain*** button.
 
-![API Section on the Settings Page](../../assets/images/domain_section.jpg)
+![API Section on the Settings Page](../../assets/images/embedding-client-app/domain_section.jpg)
 
 In my case, I am hosting the exam on `exam.richboy.me` so I added it.
 
@@ -89,7 +89,7 @@ You need to replace `{YOUR_PUBLIC_API_KEY}` in the code above with your API Publ
 
 The next thing you need to do is to add an anchor tag with the link to the exam and the class `examina-io-client-widget`. If Javascript is enabled on the page, the achor tag will be replaced with an iframe that loads the exam page. You can get the link to an Exam from the Manager application as show below or by using an API endpoint.
 
-![Getting an Exam Link](../../assets/images/manager_exam_details.jpg)
+![Getting an Exam Link](../../assets/images/embedding-client-app/manager_exam_details.jpg)
 
 If you click to open the Exam in another tab, you can get the link from the address bar. The code snippet below shows how one may include the exam link on their website. You can design around it and apply a few more attributes which we will talk about next.
 
@@ -169,7 +169,7 @@ That's all folks!
 
 ## Advanced Section (Optional)
 
-So let's say you want to do something fancy, say you do not want the examinees to login (*again*) on the exam page before starting the exam. This can be useful if your website already has an authentication/login page which they've already gone through, it can be frustrating having to login yet again.
+So let's say you want to do something fancy, say you do not want the examinees to login (*again*) on the exam page before starting the exam. This can be useful if your website already has an authentication/login page which they've already gone through; it can be frustrating having to login yet again.
 
 For this you will need your API Secret key. You can generate it from same place you generated the API Public Key. **Please keep your API Secret key safe and hidden or your data on examina.io can be compromised**.
 
@@ -203,7 +203,7 @@ $apiSecret = '{YOUR_API_SECRET_KEY}';
 $apiPublic = "AXBJe28Pdej5U7rmtE2kRmT75htWTb6s";
 $examId = "5eeb850ddc61f42affe8297c";   // The ID of the exam. Can be gotten from the Exam Link
 
-// query the API to automatically login the user
+// query the API to get a login token for this examinee
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "https://www.examina.io/api/v1/login/exam/$examId/code/$examineeCode/token");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
