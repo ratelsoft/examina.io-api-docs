@@ -23,7 +23,7 @@ There are currently 3 available options to choose from:
 
 There is an **important difference** between the Default style and the other two styles. The Default style was built to integrate seamlessly with settings from SmartExaminer thus allowing Exam branding information to be respected and shown. The Modern and Classic styles do not respect those settings and shows a preset background image and logo for the organization. 
 
-The Designer application allows setting a branding image and branding colour for each exam which can be useful to organizations needing that much flexibility. However, branding image is restricted to a maximum size of about 650*px* x 140*px* which can be somewhat restrictive if you plan to support screens with larger real-estate.
+The Designer application allows setting a branding image and branding colour for each exam which can be useful to organizations needing that much flexibility. However, branding image is restricted to a maximum size of about 600*px* x 140*px* which can be somewhat restrictive if you plan to support screens with larger real-estate.
 
 With the Modern and Classic styles, you are not restricted based on the dimension of the image. Also, you have the option of adding a logo and a background image which you can change at anytime.
 
