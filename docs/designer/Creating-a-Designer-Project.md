@@ -1,11 +1,11 @@
 ---
 tags: [designer]
 ---
-# Introducing The SmartExaminer DESIGNER
+# Introducing The Designer
 
 SmartExaminer Designer is the application responsible for building exam questions that would be ultimately used on SmartExaminer. You can regard it as the MicroSoft Word of SmartExaminer.
 
-**The image below is the The Designer User-Interface.**
+**The image below is the Designer interface.**
 
 ![Designer UserInterface](../../assets/images/Designer_Images/Designer_user_interface.jpg)
 
@@ -20,7 +20,7 @@ Before we explore each of the basic active tabs, let's introduce you to the envi
 - The `Hint` field displays clues and information regarding some of the commands you will see as we begin to build questions, and how to work with them.
 
 
-### The First Step
+### Create an Exam Project
 
 The very first step to building questions is to create an **Exam Project**.
 
@@ -36,7 +36,10 @@ The very first step to building questions is to create an **Exam Project**.
   On the Untitled Exam field, you can create Exam Papers. 
   From a school's perspective, the **Papers** can be regarded as Modules, Courses or Subjects, depending on what term it bears in your school.
 
-  ##### To create a Exam File?
+
+
+### Adding Papers and Questions
+
   1. Right click on `UNTITLED EXAM` and the dropdown reveals options to create a 
   - `NEW EXAM PAPER` 
   - `Import Papers from File` 
