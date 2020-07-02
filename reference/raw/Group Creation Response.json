@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "$ref": "./Base Group Schema.json"
+      }
+    },
+    "status": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "code",
+    "groups",
+    "status"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string",
+      "description": "The ID of the user that created the Group"
+    },
+    "creatorName": {
+      "type": "string",
+      "description": "The name of the Group creator at the time of creation"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the group"
+    },
+    "desc": {
+      "type": "string",
+      "description": "A description for the group"
+    },
+    "timeAdded": {
+      "type": "string"
+    },
+    "examinees": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "The list of IDs for the Examinees belonging to the group",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "userId",
+    "creatorName",
+    "name",
+    "desc",
+    "timeAdded",
+    "examinees"
+  ]
+}

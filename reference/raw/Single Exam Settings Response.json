@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Success response from an Exam settings get request",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "status": {
+      "type": "boolean"
+    },
+    "settings": {
+      "$ref": "./Base Exam Settings Schema.json"
+    }
+  },
+  "required": [
+    "code",
+    "status"
+  ]
+}

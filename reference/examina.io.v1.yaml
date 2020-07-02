@@ -35,19 +35,30 @@ paths:
                         examCode: SAMPLEEXAM
                         examTitle: SAMPLE EXAM
                         version: 1.0.0
-                        examiner: null
-                        visibility: false
                         brandingImage: null
                         brandingColor: null
                         timeAdded: '2020-06-17T17:42:12.687+0000'
                         fileSize: 4378
                         examPaperFlow: Client Controlled
-                        showAnswersAfterExam: false
-                        showResultsAfterExam: true
-                        requirePreverification: false
-                        inExamFaceAutoProcturing: false
-                        inExamSoundAutoProcturing: false
-                        inExamLiveProcturing: false
+                        settings:
+                          visibility: true
+                          handheldSettings:
+                            allowPhone: true
+                            allowTablet: true
+                            phoneExamPage: MOBILE
+                            tabletExamPage: REGULAR
+                          showAnswersAfterExam: false
+                          showResultsAfterExam: true
+                          requirePreverification: false
+                          examiner:
+                            Examiner Name: examiner@example.com
+                          internetDisconnectionPolicy:
+                            onDisconnect: PAUSE_EXAM
+                            after: 1
+                          inExamLiveProcturing: true
+                          proctorPolicy:
+                            onDisconnect: LOGOUT_EXAMINEE
+                            after: 30
                         papers:
                           - Driving Test: 20
                           - Basic ICT: 20
@@ -90,19 +101,29 @@ paths:
                       examCode: SAMPLEEXAM
                       examTitle: SAMPLE EXAM
                       version: 1.0.0
-                      examiner: null
-                      visibility: false
                       brandingImage: null
                       brandingColor: null
                       timeAdded: '2020-06-17T17:42:12.687+0000'
                       fileSize: 4378
                       examPaperFlow: Client Controlled
-                      showAnswersAfterExam: false
-                      showResultsAfterExam: true
-                      requirePreverification: false
-                      inExamFaceAutoProcturing: false
-                      inExamSoundAutoProcturing: false
-                      inExamLiveProcturing: false
+                      settings:
+                        visibility: false
+                        handheldSettings:
+                          allowPhone: false
+                          allowTablet: false
+                          phoneExamPage: MOBILE
+                          tabletExamPage: MOBILE
+                        showAnswersAfterExam: false
+                        showResultsAfterExam: true
+                        requirePreverification: false
+                        examiner: null
+                        internetDisconnectionPolicy:
+                          onDisconnect: DO_NOTHING
+                          after: 0
+                        inExamLiveProcturing: false
+                        proctorPolicy:
+                          onDisconnect: DO_NOTHING
+                          after: 0
                       papers:
                         - Driving Test: 20
                         - Basic ICT: 20
@@ -114,22 +135,6 @@ paths:
                       examLink: 'https://www.examina.io/client/5eea55f4cb305a365eb98850'
                     code: OK
                     status: true
-        '406':
-          description: Not Acceptable
-          content:
-            application/json:
-              schema:
-                $ref: ./raw/Error Format.json
-              examples:
-                File type rejected example response:
-                  value:
-                    code: ERR
-                    message: This file appears to be a Designer Project file. You need to export the exam first from the designer.
-                    error:
-                      code: '406'
-                      id: ERR_406
-                      desc: Incorrect parameter specified.
-                    status: false
         '409':
           description: Conflict
           content:
@@ -145,6 +150,22 @@ paths:
                       code: '103'
                       id: ERR_103
                       desc: Invalid state or duplicate request.
+                    status: false
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format.json
+              examples:
+                File type rejected example response:
+                  value:
+                    code: ERR
+                    message: This file appears to be a Designer Project file. You need to export the exam first from the designer.
+                    error:
+                      code: '422'
+                      id: ERR_422
+                      desc: Incorrect parameter specified.
                     status: false
         '500':
           description: Internal Server Error. If any failure occurred while pushing file to file server.
@@ -183,19 +204,30 @@ paths:
                       examCode: SAMPLEEXAM
                       examTitle: SAMPLE EXAM
                       version: 1.0.0
-                      examiner: null
-                      visibility: false
                       brandingImage: null
                       brandingColor: null
                       timeAdded: '2020-06-17T17:42:12.687+0000'
                       fileSize: 4378
                       examPaperFlow: Client Controlled
-                      showAnswersAfterExam: false
-                      showResultsAfterExam: true
-                      requirePreverification: false
-                      inExamFaceAutoProcturing: false
-                      inExamSoundAutoProcturing: false
-                      inExamLiveProcturing: false
+                      settings:
+                        visibility: true
+                        handheldSettings:
+                          allowPhone: true
+                          allowTablet: true
+                          phoneExamPage: MOBILE
+                          tabletExamPage: REGULAR
+                        showAnswersAfterExam: false
+                        showResultsAfterExam: true
+                        requirePreverification: false
+                        examiner:
+                          Examiner Name: examiner@example.com
+                        internetDisconnectionPolicy:
+                          onDisconnect: PAUSE_EXAM
+                          after: 1
+                        inExamLiveProcturing: true
+                        proctorPolicy:
+                          onDisconnect: LOGOUT_EXAMINEE
+                          after: 30
                       papers:
                         - Driving Test: 20
                         - Basic ICT: 20
@@ -309,8 +341,8 @@ paths:
             application/json:
               schema:
                 $ref: ./raw/Paginated Exams.json
-        '406':
-          description: Not Acceptable
+        '422':
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -321,8 +353,8 @@ paths:
                     code: ERR
                     message: You can only query for exams one tag at a time. Comma is not allowed here
                     error:
-                      code: '406'
-                      id: ERR_406
+                      code: '422'
+                      id: ERR_422
                       desc: Incorrect parameter specified.
                     status: false
       operationId: get-exams-tag
@@ -432,25 +464,6 @@ paths:
                       - ratelsoft
                       - examina.io
                       - ratelsoft inc
-        '406':
-          description: |-
-            Not Acceptable
-
-            This response is returned if an empty tag or a tag with commas and/or path separators are found in any of the tags.
-          content:
-            application/json:
-              schema:
-                $ref: ./raw/Error Format.json
-              examples:
-                Sample Response:
-                  value:
-                    code: ERR
-                    message: Tags cannot contain commas. Process failed.
-                    error:
-                      code: '406'
-                      id: ERR_406
-                      desc: Incorrect parameter specified.
-                    status: false
         '415':
           description: |-
             Unsupported Media Type
@@ -469,6 +482,25 @@ paths:
                       code: '415'
                       id: ERR_415
                       desc: The request or request parameter is invalid or unrecognizable.
+                    status: false
+        '422':
+          description: |-
+            Unprocessable Entity
+
+            This response is returned if an empty tag or a tag with commas and/or path separators are found in any of the tags.
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format.json
+              examples:
+                Sample Response:
+                  value:
+                    code: ERR
+                    message: Tags cannot contain commas. Process failed.
+                    error:
+                      code: '422'
+                      id: ERR_422
+                      desc: Incorrect parameter specified.
                     status: false
       operationId: post-exam-examId-tags-tags
       description: |-
@@ -809,9 +841,9 @@ paths:
                     code: OK
                     status: true
                     token: 63m44vhVWQN3cpt2bYfGwS2T624rZzTZ
-        '406':
+        '422':
           description: |-
-            Not Acceptable
+            Unprocessable Entity
 
             If the specified duration could not be parsed or the time provided is greater than 24 hours.
           content:
@@ -824,9 +856,9 @@ paths:
                     code: ERR
                     message: The specified duration cannot be understood.
                     error:
-                      code: '415'
-                      id: ERR_415
-                      desc: The request or request parameter is invalid or unrecognizable.
+                      code: '422'
+                      id: ERR_422
+                      desc: Incorrect parameter specified.
                     status: false
       operationId: get-login-exam-examId-code-examineeCode-token
       description: |-
@@ -885,7 +917,7 @@ paths:
                     code: OK
                     status: true
                     token: 63m44vhVWQN3cpt2bYfGwS2T624rZzTZ
-        '406':
+        '422':
           description: |-
             Not Acceptable
 
@@ -900,9 +932,9 @@ paths:
                     code: ERR
                     message: The specified duration cannot be understood.
                     error:
-                      code: '415'
-                      id: ERR_415
-                      desc: The request or request parameter is invalid or unrecognizable.
+                      code: '422'
+                      id: ERR_422
+                      desc: Incorrect parameter specified.
                     status: false
       operationId: get-login-exam-examId-id-examineeId-token
       description: |-
@@ -927,6 +959,256 @@ paths:
                 value:
                   duration: 1440s
         description: "You can specify an optional duration. The maximum duration is 24 hrs. By default, the duration would be set to the duration of the Exam. \n\nThe duration is a time string. You can provide in seconds, minutes or hours. **Minutes is recommended**."
+  '/exam/{examId}/settings':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: The ID of the target Exam.
+    put:
+      summary: Change some or all of the Exam settings
+      tags:
+        - exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Single Exam Settings Response.json
+              examples:
+                Sample Success Response:
+                  value:
+                    settings:
+                      visibility: true
+                      handheldSettings:
+                        allowPhone: true
+                        allowTablet: true
+                        phoneExamPage: MOBILE
+                        tabletExamPage: REGULAR
+                      showAnswersAfterExam: false
+                      showResultsAfterExam: true
+                      requirePreverification: false
+                      examiner:
+                        Examiner Name: examiner@example.com
+                      internetDisconnectionPolicy:
+                        onDisconnect: PAUSE_EXAM
+                        after: 1
+                      inExamLiveProcturing: true
+                      proctorPolicy:
+                        onDisconnect: LOGOUT_EXAMINEE
+                        after: 30
+                    code: OK
+                    status: true
+      operationId: put-exam-examId-settings
+      security:
+        - api apiSecretKey: []
+      description: |-
+        This is to change some or all of the exam settings. You only need to pass on the settings you want to change and ignore the rest.
+
+        All invalid/unrecognized settings are ignored without warning.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./raw/Base Exam Settings Schema.json
+            examples:
+              Sample Payload with all Settings:
+                value:
+                  visibility: true
+                  allowPhone: true
+                  allowTablet: true
+                  phoneExamPage: MOBILE
+                  tabletExamPage: REGULAR
+                  showAnswersAfterExam: false
+                  showResultsAfterExam: true
+                  requirePreverification: false
+                  examinerName: Peter Jones
+                  examinerEmail: examiner@example.com
+                  internetPolicyDisconnect: PAUSE_EXAM
+                  internetPolicyAttempts: 1
+                  inExamLiveProcturing: true
+                  proctorPolicyDisconnect: LOGOUT_EXAMINEE
+                  proctorPolicySeconds: 30
+        description: |-
+          You only need to pass on the settings you want to modify. All invalid settings are silently ignored.
+
+          Options for `phoneExamPage` and `tabletExamPage` are `MOBILE` and `REGULAR` and are not case sensitive.
+
+          Options for `internetPolicyDisconnect` and `proctorPolicyDisconnect` are `DO_NOTHING`, `PAUSE_EXAM` and `LOGOUT_EXAMINEE`. The values are not case sensitive and could be without the underscore or be replaced with hyphens and/or spaces. These would also work: `donothing`, `Pause Exam`, `logout-Examinee`.
+
+          The minimum value for `internetPolicyAttempts` is 1.
+    get:
+      summary: ''
+      operationId: get-exam-examId-settings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Single Exam Settings Response.json
+              examples:
+                Sample Success Response:
+                  value:
+                    settings:
+                      visibility: true
+                      handheldSettings:
+                        allowPhone: true
+                        allowTablet: true
+                        phoneExamPage: MOBILE
+                        tabletExamPage: REGULAR
+                      showAnswersAfterExam: false
+                      showResultsAfterExam: true
+                      requirePreverification: false
+                      examiner:
+                        Examiner Name: examiner@example.com
+                      internetDisconnectionPolicy:
+                        onDisconnect: PAUSE_EXAM
+                        after: 1
+                      inExamLiveProcturing: true
+                      proctorPolicy:
+                        onDisconnect: LOGOUT_EXAMINEE
+                        after: 30
+                    code: OK
+                    status: true
+      description: This allows you to get the current Exam settings for the target Exam.
+  /group:
+    post:
+      summary: Create a new Group
+      tags:
+        - groups
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Group Creation Response.json
+              examples:
+                Sample Success Response:
+                  value:
+                    code: OK
+                    groups:
+                      - id: 5efe39249ae73336c03b2b3f
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Juniors
+                        desc: Juniors
+                        timeAdded: '2020-07-02T19:44:36.062+0000'
+                        examinees: null
+                    status: true
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format.json
+              examples:
+                Sample Duplicate Group Error:
+                  value:
+                    code: ERR
+                    message: 'Another Group already exists with the name - "Juniors". No change has been made.'
+                    error:
+                      code: '409'
+                      id: ERR_409
+                      desc: Invalid state or duplicate request.
+                    status: false
+      operationId: post-group
+      description: Create a new Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+              required:
+                - name
+            examples:
+              Example without Group description:
+                value:
+                  name: Juniors
+        description: |-
+          `name` is the name of the Group.
+          `desc` is optional and is the description for the group. If this is not specified, the name is used as the description.
+  /groups:
+    post:
+      summary: Create multiple Groups at once
+      tags:
+        - groups
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Group Creation Response.json
+              examples:
+                Example Success Response:
+                  value:
+                    code: OK
+                    groups:
+                      - id: 5efe6179183be72cde888e6b
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Seniors
+                        desc: A Group for the senior classes
+                        timeAdded: '2020-07-02T22:36:41.417+0000'
+                        examinees: null
+                      - id: 5efe6179183be72cde888e6c
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Applicants July 2020
+                        desc: A Group for the July 2020 applicants
+                        timeAdded: '2020-07-02T22:36:41.498+0000'
+                        examinees: null
+                    status: true
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format.json
+              examples:
+                Sample Duplicate Group Error:
+                  value:
+                    code: ERR
+                    message: 'Another Group already exists with the name - "Seniors". No change has been made.'
+                    error:
+                      code: '409'
+                      id: ERR_409
+                      desc: Invalid state or duplicate request.
+                    status: false
+      operationId: post-groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  desc:
+                    type: string
+                required:
+                  - name
+            examples:
+              Sample Payload:
+                value:
+                  - name: Seniors
+                    desc: A Group for the senior classes
+                  - name: Applicants July 2020
+                    desc: A Group for the July 2020 applicants
+        description: A List of JSON objects with `name` and an optional `desc`
+      description: Create multiple Groups at once.
 components:
   schemas: {}
   securitySchemes:

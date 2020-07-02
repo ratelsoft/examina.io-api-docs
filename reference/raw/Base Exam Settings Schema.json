@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Base Exam Settings Success Response Schema",
+  "properties": {
+    "visibility": {
+      "type": "boolean"
+    },
+    "handheldSettings": {
+      "type": "object",
+      "required": [
+        "allowPhone",
+        "allowTablet",
+        "phoneExamPage",
+        "tabletExamPage"
+      ],
+      "properties": {
+        "allowPhone": {
+          "type": "boolean"
+        },
+        "allowTablet": {
+          "type": "boolean"
+        },
+        "phoneExamPage": {
+          "type": "string"
+        },
+        "tabletExamPage": {
+          "type": "string"
+        }
+      }
+    },
+    "showAnswersAfterExam": {
+      "type": "boolean",
+      "description": "If this should be like a training exam and show them the answers after the exam."
+    },
+    "showResultsAfterExam": {
+      "type": "boolean",
+      "description": "If they should see their scores after the exam."
+    },
+    "requirePreverification": {
+      "type": "boolean"
+    },
+    "examiner": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "examinerName"
+      ],
+      "properties": {
+        "examinerName": {
+          "type": "string",
+          "description": "A map of the Examiner name and the Examiner email address."
+        }
+      }
+    },
+    "internetDisconnectionPolicy": {
+      "type": "object",
+      "required": [
+        "onDisconnect",
+        "after"
+      ],
+      "properties": {
+        "onDisconnect": {
+          "type": "string",
+          "description": "options are DO_NOTHING, PAUSE_EXAM and LOGOUT_EXAMINEE"
+        },
+        "after": {
+          "type": "integer",
+          "description": "The number of failed attempts to save state before taking the onDisconnect action. Minimum value is 1."
+        }
+      }
+    },
+    "inExamLiveProcturing": {
+      "type": "boolean"
+    },
+    "proctorPolicy": {
+      "type": "object",
+      "required": [
+        "onDisconnect",
+        "after"
+      ],
+      "properties": {
+        "onDisconnect": {
+          "type": "string",
+          "description": "options are DO_NOTHING, PAUSE_EXAM and LOGOUT_EXAMINEE"
+        },
+        "after": {
+          "type": "integer",
+          "description": "The number of seconds to wait before taking the onDisconnect action"
+        }
+      }
+    }
+  },
+  "required": [
+    "visibility",
+    "handheldSettings",
+    "showAnswersAfterExam",
+    "showResultsAfterExam",
+    "requirePreverification",
+    "examiner",
+    "internetDisconnectionPolicy",
+    "inExamLiveProcturing",
+    "proctorPolicy"
+  ]
+}
