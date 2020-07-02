@@ -1041,7 +1041,7 @@ paths:
 
           The minimum value for `internetPolicyAttempts` is 1.
     get:
-      summary: ''
+      summary: Get Exam Settings
       operationId: get-exam-examId-settings
       responses:
         '200':
@@ -1075,6 +1075,8 @@ paths:
                     code: OK
                     status: true
       description: This allows you to get the current Exam settings for the target Exam.
+      tags:
+        - exams
   /group:
     post:
       summary: Create a new Group
