@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "visibility": {
+      "type": "boolean"
+    },
+    "allowPhone": {
+      "type": "boolean"
+    },
+    "allowTablet": {
+      "type": "boolean"
+    },
+    "phoneExamPage": {
+      "type": "string"
+    },
+    "tabletExamPage": {
+      "type": "string"
+    },
+    "showAnswersAfterExam": {
+      "type": "boolean"
+    },
+    "showResultsAfterExam": {
+      "type": "boolean"
+    },
+    "requirePreverification": {
+      "type": "boolean"
+    },
+    "examinerName": {
+      "type": "string"
+    },
+    "examinerEmail": {
+      "type": "string"
+    },
+    "internetPolicyDisconnect": {
+      "type": "string"
+    },
+    "internetPolicyAttempts": {
+      "type": "integer"
+    },
+    "inExamLiveProcturing": {
+      "type": "boolean"
+    },
+    "proctorPolicyDisconnect": {
+      "type": "string"
+    },
+    "proctorPolicySeconds": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "visibility",
+    "allowPhone",
+    "allowTablet",
+    "phoneExamPage",
+    "tabletExamPage",
+    "showAnswersAfterExam",
+    "showResultsAfterExam",
+    "requirePreverification",
+    "examinerName",
+    "examinerEmail",
+    "internetPolicyDisconnect",
+    "internetPolicyAttempts",
+    "inExamLiveProcturing",
+    "proctorPolicyDisconnect",
+    "proctorPolicySeconds"
+  ]
+}
