@@ -72,7 +72,7 @@ paths:
                     page: 1
                     status: true
       operationId: get-exams
-      description: 'Get all exams created in your organization. Response is paginated and is 1-based. You can specify the optional *page* path param to load exams in that page.'
+      description: 'Get all exams created in your organization. Response is paginated and is 1-based. You can specify the optional *page* path param to load exams on that page.'
       security:
         - api apiSecretKey: []
     parameters:
@@ -1077,6 +1077,8 @@ paths:
       description: This allows you to get the current Exam settings for the target Exam.
       tags:
         - exams
+      security:
+        - api apiSecretKey: []
   /group:
     post:
       summary: Create a new Group
@@ -1139,7 +1141,9 @@ paths:
         description: |-
           `name` is the name of the Group.
           `desc` is optional and is the description for the group. If this is not specified, the name is used as the description.
-  /groups:
+      security:
+        - api apiSecretKey: []
+  '/groups/{page}':
     post:
       summary: Create multiple Groups at once
       tags:
@@ -1210,7 +1214,322 @@ paths:
                   - name: Applicants July 2020
                     desc: A Group for the July 2020 applicants
         description: A List of JSON objects with `name` and an optional `desc`
-      description: Create multiple Groups at once.
+      description: "Create multiple Groups at once. \n\nThe `page` path param is not required for the `POST` request."
+      security:
+        - api apiSecretKey: []
+    get:
+      summary: Get Groups
+      operationId: get-groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Paginated Groups.json
+              examples:
+                Sample Response:
+                  value:
+                    maxPageCount: 25
+                    total: 2
+                    current: 2
+                    code: OK
+                    pages: 1
+                    groups:
+                      - id: 5efe6179183be72cde888e6b
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Seniors
+                        desc: A Group for the senior classes
+                        timeAdded: '2020-07-02T22:36:41.417+0000'
+                        examinees:
+                          - 5ec31d64c7c54971270e0d70
+                          - 5ec0b77182ae4f4d01109319
+                      - id: 5efe39249ae73336c03b2b3f
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Juniors
+                        desc: Juniors
+                        timeAdded: '2020-07-02T19:44:36.062+0000'
+                        examinees: null
+                    page: 1
+                    status: true
+      tags:
+        - groups
+      description: 'Get all groups added in your organization. Response is paginated and is 1-based. You can specify the optional *page* path param to load groups on that page.'
+    parameters:
+      - schema:
+          type: string
+        name: page
+        in: path
+        description: Only used for the Get request. The page from which to retrive the groups.
+  '/group/{groupId}/examinees':
+    parameters:
+      - schema:
+          type: string
+        name: groupId
+        in: path
+        required: true
+    get:
+      summary: Get all the Examinees in this Group
+      tags:
+        - groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  code:
+                    type: string
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - status
+                  - code
+                  - examinees
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    examinees:
+                      - 5eefc6f4e23b88151efc9326
+                      - 5ec0b77182ae4f4d01109319
+                    status: true
+      operationId: get-group-groupId-examinees
+      security:
+        - api apiSecretKey: []
+      description: This allows you to get the IDs of all examinees in a Group
+    post:
+      summary: Add Examinees to a Group
+      tags:
+        - groups
+      responses:
+        '200':
+          description: |-
+            OK
+
+            Returns a response with a list of the examinee IDs that were either added or already members of the group.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Sample Success Response:
+                  value:
+                    code: OK
+                    examinees:
+                      - 5eefc6f4e23b88151efc9326
+                      - 5ec0b77182ae4f4d01109319
+                    status: true
+      operationId: post-group-groupId-examinees
+      security:
+        - api apiSecretKey: []
+      description: 'This allows you to add examinees to a group. If any examinee does not exist, or is already a member of the group, it is silently ignored.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Sample Payload:
+                value:
+                  - 5ec0b77182ae4f4d01109319
+                  - 5eefc6f4e23b88151efc9326
+        description: You pass a list of Examinee IDs to add to the group.
+    delete:
+      summary: Remove Examinees from a Group
+      tags:
+        - groups
+      responses:
+        '200':
+          description: |-
+            OK
+
+            Returns a response with a list of the examinee IDs that were found and removed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    description: The examinees found and removed from the group.
+                    items:
+                      type: string
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    examinees:
+                      - 5eefc6f4e23b88151efc9326
+                      - 5ec0b77182ae4f4d01109319
+                    status: true
+      operationId: delete-group-groupId-examinees
+      security:
+        - api apiSecretKey: []
+      description: |-
+        This allows you to remove examinees from a group. Any examinee that was not found will be silently ignored.
+
+        To remove all examinees, send an empty list as the payload.
+
+        Note that this does ***not*** delete the examinees. This only detaches examinees from the group. The group and the examinees would all still exist.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Sample Payload:
+                value:
+                  - 5ec0b77182ae4f4d01109319
+                  - 5eefc6f4e23b88151efc9326
+              Remove All Examinees Payload:
+                value: []
+        description: A list of examinee IDs to remove from the group.
+  '/group/{groupId}':
+    parameters:
+      - schema:
+          type: string
+        name: groupId
+        in: path
+        required: true
+    get:
+      summary: Get Group details
+      tags:
+        - groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  group:
+                    $ref: ./raw/Base Group Schema.json
+                required:
+                  - code
+                  - status
+                  - group
+              examples:
+                Sample Success Response:
+                  value:
+                    code: OK
+                    status: true
+                    group:
+                      id: 5efe6179183be72cde888e6c
+                      userId: 5ebcc66b61636c132abecc41
+                      creatorName: David Echomgbe
+                      name: Applicants July 2020
+                      desc: A Group for the July 2020 applicants
+                      timeAdded: '2020-07-02T22:36:41.498+0000'
+                      examinees:
+                        - 5ec0b77182ae4f4d01109319
+                        - 5eefc6f4e23b88151efc9326
+      operationId: get-group-groupId
+      security:
+        - api apiSecretKey: []
+    delete:
+      summary: Delete a Group
+      tags:
+        - groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Simple OK Response.json
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    status: true
+      operationId: delete-group-groupId
+      security:
+        - api apiSecretKey: []
+      description: This does not delete the examinees in the group. The examinees are removed from the group and then the group is deleted.
+  '/group/{groupId}/groups':
+    parameters:
+      - schema:
+          type: string
+        name: groupId
+        in: path
+        required: true
+    post:
+      summary: Add Groups to Group
+      tags:
+        - groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    examinees:
+                      - 5ec31d64c7c54971270e0d70
+                      - 5ec0b77182ae4f4d01109319
+                    status: true
+      operationId: post-group-groupId-groups
+      description: |-
+        This allows you to aggregate examinees in one or more groups and add them to a single group. Duplicate examinees are silently ignored. Groups that do not exist are also silently ignored.
+
+        A list of the IDs of all added examinees are returned.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Sample Payload:
+                value:
+                  - 5ec02dd0685c6765d6b440c1
+                  - 5ec030da685c6765d6b440c3
+        description: A list of Group IDs from which to get examinees and add to this group.
 components:
   schemas: {}
   securitySchemes:
