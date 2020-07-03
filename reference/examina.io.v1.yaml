@@ -1009,7 +1009,7 @@ paths:
       security:
         - api apiSecretKey: []
       description: |-
-        This is to replace all of the exam settings. If you do not supply a value for all available settings, they would be set to the default.
+        This is to replace all of the exam settings. If you do not supply a value for any settings, they would be set to the default.
 
         All invalid/unrecognized settings are ignored without warning. However, Examiner information is required when `requirePreverification` is enabled.
       requestBody:
@@ -1083,7 +1083,7 @@ paths:
       security:
         - api apiSecretKey: []
     patch:
-      summary: Change some or all of the Exam settings
+      summary: Change Exam settings
       operationId: patch-exam-examId-settings
       responses:
         '200':
