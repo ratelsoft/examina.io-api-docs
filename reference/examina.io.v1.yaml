@@ -186,7 +186,7 @@ paths:
         - api apiSecretKey: []
   '/exam/{id}':
     get:
-      summary: Retrieve Exam Details
+      summary: Get the details of an Exam
       tags:
         - exams
       responses:
@@ -1859,7 +1859,7 @@ paths:
         in: path
         required: true
     post:
-      summary: Map Examinees in a Group to Exam
+      summary: Map Examinees in a Group to an Exam
       tags:
         - exams
         - groups
