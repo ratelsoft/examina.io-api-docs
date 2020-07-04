@@ -1212,79 +1212,6 @@ paths:
       security:
         - api apiSecretKey: []
   '/groups/{page}':
-    post:
-      summary: Create multiple Groups at once
-      tags:
-        - groups
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: ./raw/Group Creation Response.json
-              examples:
-                Example Success Response:
-                  value:
-                    code: OK
-                    groups:
-                      - id: 5efe6179183be72cde888e6b
-                        userId: 5ebcc66b61636c132abecc41
-                        creatorName: David Echomgbe
-                        name: Seniors
-                        desc: A Group for the senior classes
-                        timeAdded: '2020-07-02T22:36:41.417+0000'
-                        examinees: null
-                      - id: 5efe6179183be72cde888e6c
-                        userId: 5ebcc66b61636c132abecc41
-                        creatorName: David Echomgbe
-                        name: Applicants July 2020
-                        desc: A Group for the July 2020 applicants
-                        timeAdded: '2020-07-02T22:36:41.498+0000'
-                        examinees: null
-                    status: true
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: ./raw/Error Format.json
-              examples:
-                Sample Duplicate Group Error:
-                  value:
-                    code: ERR
-                    message: 'Another Group already exists with the name - "Seniors". No change has been made.'
-                    error:
-                      code: '409'
-                      id: ERR_409
-                      desc: Invalid state or duplicate request.
-                    status: false
-      operationId: post-groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  desc:
-                    type: string
-                required:
-                  - name
-            examples:
-              Sample Payload:
-                value:
-                  - name: Seniors
-                    desc: A Group for the senior classes
-                  - name: Applicants July 2020
-                    desc: A Group for the July 2020 applicants
-        description: A List of JSON objects with `name` and an optional `desc`
-      description: "Create multiple Groups at once. \n\nThe `page` path param is not required for the `POST` request and will be ignored."
-      security:
-        - api apiSecretKey: []
     get:
       summary: Get Groups
       operationId: get-groups
@@ -1598,6 +1525,450 @@ paths:
                   - 5ec02dd0685c6765d6b440c1
                   - 5ec030da685c6765d6b440c3
         description: A list of Group IDs from which to get examinees and add to this group.
+  '/exam/{examId}/examinee/{examineeId}':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: examineeId
+        in: path
+        required: true
+    get:
+      summary: Get Exam Examinee Mapping Details
+      tags:
+        - exams
+        - examinees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  mapping:
+                    type: object
+                    required:
+                      - examineeId
+                      - examId
+                      - papers
+                    properties:
+                      examineeId:
+                        type: string
+                      examId:
+                        type: string
+                      papers:
+                        type: array
+                        description: A list of the mapped papers which write.
+                        items:
+                          type: string
+                required:
+                  - code
+                  - status
+                  - mapping
+              examples:
+                Sample Response:
+                  value:
+                    mapping:
+                      examId: 5ed05438195e655f28c56f04
+                      startTime: Anytime
+                      papers:
+                        - Computer Science
+                      examineeId: 5ed05438195e655f28c56f04
+                    code: OK
+                    status: true
+      operationId: get-exam-examId-examinee-examineeId
+      description: Get Mapping information for an Examinee.
+      security:
+        - api apiSecretKey: []
+    delete:
+      summary: Delete Exam Examinee Mapping
+      tags:
+        - exams
+        - examinees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Simple OK Response.json
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    status: true
+      operationId: delete-exam-examId-examinee-examineeId
+      security:
+        - api apiSecretKey: []
+      description: Delete Exam mapping for an Examinee
+  '/exam/{examId}/examinees':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+    post:
+      summary: Map multiple Examinees to an Exam
+      tags:
+        - exams
+        - examinees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+                  papers:
+                    type: array
+                    items:
+                      type: string
+                  startTime:
+                    type: string
+                required:
+                  - code
+                  - status
+                  - examinees
+                  - papers
+                  - startTime
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    startTime: '2020-12-10T09:30:00.000+00:00'
+                    examinees:
+                      - 5ec31d64c7c54971270e0d70
+                    papers:
+                      - General
+                    status: true
+      operationId: post-exam-examId-examinees
+      description: Add multiple examinees to take an exam with same papers and time.
+      security:
+        - api apiSecretKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: A list of Examinee IDs to be mapped.
+                  items:
+                    type: string
+                papers:
+                  type: array
+                  description: A case-sensitive list of the Paper titles to map.
+                  items:
+                    type: string
+                startTime:
+                  type: string
+                  description: ISO valid date-time timestamp string for the Start Time for the Exam. You can use `Anytime` to allow examiness to start at anytime.
+              required:
+                - ids
+                - papers
+                - startTime
+            examples:
+              Sample Payload:
+                value:
+                  ids:
+                    - 5ec31d64c7c54971270e0d70
+                  papers:
+                    - General
+                  startTime: '2020-12-10T10:30:00+01:00'
+              Map all available papers:
+                value:
+                  ids:
+                    - 5ec31d64c7c54971270e0d70
+                  papers: []
+                  startTime: Anytime
+        description: |-
+          The payload is an object with three keys:
+
+          `ids`: The IDs for all the examinees you want to map.
+
+          `papers`: A list of all the papers which the examinees would be taking. **The titles of the papers are case sensitive**. To map all available papers, supply an empty list.
+
+          `startTime`: ISO valid date-time timestamp. If a timezone portion is not supplied, UTC would be assumed. You can also pass on `Anytime` or `null` as the value to allow examinees to take the exam anytime. Seconds and Nano seconds are ignored and always set to 0.
+
+          `startTime` examples:
+          1. 2020-12-10T10:30:00
+          2. 2020-12-10T10:30:00.000+01:00
+          3. 2020-12-10T10:30:00+01:00[Europe/Paris]
+          4. Anytime
+          5. null
+
+          The supplied `startTime` would be converted to a UTC date-time for the same instant using `Africa/Accra` as reference.
+    delete:
+      summary: Delete Exam Mapping for multiple Examinees
+      tags:
+        - exams
+        - examinees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    status: true
+                    examinees:
+                      - 5ec31d64c7c54971270e0d70
+                      - 5ec0b77182ae4f4d01109319
+      operationId: delete-exam-examId-examinees
+      security:
+        - api apiSecretKey: []
+      description: |-
+        This does not delete examinees or exams. It only removes examinees from taking an exam.
+
+        Deleting Exam mapping also deletes the exam results for the selected examinees.
+
+        Any examinee in the payload that does not exist or has not been mapped would be silently skipped. If the payload list is empty, all mapped examinees would be affected.
+
+        The response returns a list of the examinee IDs that existed and were mapped and were unmapped.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            examples:
+              Sample Payload:
+                value:
+                  - 5ec31d64c7c54971270e0d70
+                  - 5ec0b77182ae4f4d01109319
+              Empty List Payload to Remove all Mapped Examinees:
+                value: []
+        description: |-
+          Accepts an array of examinee ids that are already mapped to this exam.
+
+          To delete mapping for all examinees already mapped to this exam, pass on an empty list.
+  /groups:
+    post:
+      summary: Create multiple Groups
+      tags:
+        - groups
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Group Creation Response.json
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    groups:
+                      - id: 5efe6179183be72cde888e6b
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Seniors
+                        desc: A Group for the senior classes
+                        timeAdded: '2020-07-02T22:36:41.417+0000'
+                        examinees: null
+                      - id: 5efe6179183be72cde888e6c
+                        userId: 5ebcc66b61636c132abecc41
+                        creatorName: David Echomgbe
+                        name: Applicants July 2020
+                        desc: A Group for the July 2020 applicants
+                        timeAdded: '2020-07-02T22:36:41.498+0000'
+                        examinees: null
+                    status: true
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: ./raw/Error Format.json
+              examples:
+                Sample Duplicate Group Name Response:
+                  value:
+                    code: ERR
+                    message: 'Another Group already exists with the name - "Seniors". No change has been made.'
+                    error:
+                      code: '409'
+                      id: ERR_409
+                      desc: Invalid state or duplicate request.
+                    status: false
+      operationId: post-groups
+      security:
+        - api apiSecretKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  '':
+                    type: string
+                    description: Description of the group.
+                required:
+                  - name
+            examples:
+              Sample Payload:
+                value:
+                  - name: Seniors
+                    desc: A Group for the senior classes
+                  - name: Applicants July 2020
+                    desc: A Group for the July 2020 applicants
+        description: A List of JSON objects with `name` and an optional `desc`
+      description: Create multiple Groups at once
+  '/exam/{examId}/groups':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+    post:
+      summary: Map Examinees in a Group to Exam
+      tags:
+        - exams
+        - groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  status:
+                    type: boolean
+                  examinees:
+                    type: array
+                    items:
+                      type: string
+                  papers:
+                    type: array
+                    items:
+                      type: string
+                  startTime:
+                    type: string
+              examples:
+                Sample Response:
+                  value:
+                    code: OK
+                    startTime: '2020-12-10T10:30:00.000+0000'
+                    examinees:
+                      - 5eff4a0ee8cc912519e2dbf7
+                      - 5eff4a0ee8cc912519e2dbf8
+                      - 5eff4a0de8cc912519e2dbe2
+                      - 5eff4a0ee8cc912519e2dbf3
+                      - 5eff4a0de8cc912519e2dbe1
+                      - 5eff4a0ee8cc912519e2dbf4
+                      - 5eff4a0ee8cc912519e2dbf5
+                      - 5eff4a0de8cc912519e2dbf0
+                      - 5eff4a0ee8cc912519e2dbf6
+                      - 5eff4a0de8cc912519e2dbef
+                      - 5eff4a0de8cc912519e2dbee
+                      - 5eff4a0de8cc912519e2dbed
+                      - 5eff4a0de8cc912519e2dbec
+                      - 5eff4a0de8cc912519e2dbeb
+                      - 5eff4a0de8cc912519e2dbea
+                      - 5eff4a0de8cc912519e2dbe6
+                      - 5eff4a0de8cc912519e2dbe5
+                      - 5eff4a0de8cc912519e2dbe4
+                      - 5eff4a0ee8cc912519e2dbf1
+                      - 5eff4a0de8cc912519e2dbe3
+                      - 5eff4a0ee8cc912519e2dbf2
+                      - 5eff4a0de8cc912519e2dbe9
+                      - 5eff4a0de8cc912519e2dbe8
+                      - 5eff4a0de8cc912519e2dbe7
+                    papers:
+                      - General
+                    status: true
+      operationId: post-exam-examId-groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: A list of Group IDs from which to pull examinees to be mapped.
+                  items:
+                    type: string
+                papers:
+                  type: array
+                  description: A case-sensitive list of the Paper titles to map.
+                  items:
+                    type: string
+                startTime:
+                  type: string
+                  description: ISO valid date-time timestamp string for the Start Time for the Exam. You can use `Anytime` to allow examiness to start at anytime.
+              required:
+                - ids
+                - papers
+                - startTime
+            examples:
+              Sample Payload:
+                value:
+                  ids:
+                    - 5ec861b33145820f14bb9ba3
+                  papers: []
+                  startTime: '2020-12-10T10:30:54.567'
+        description: |-
+          The payload is an object with three keys:
+
+          `ids`: The IDs for all the groups from which all examinees you want to map would be obtained.
+
+          `papers`: A list of all the papers which the examinees would be taking. **The titles of the papers are case sensitive**. To map all available papers, supply an empty list.
+
+          `startTime`: ISO valid date-time timestamp. If a timezone portion is not supplied, UTC would be assumed. You can also pass on `Anytime` or `null` as the value to allow examinees to take the exam anytime. Seconds and Nano seconds are ignored and always set to 0.
+
+          `startTime` examples:
+          1. 2020-12-10T10:30:00
+          2. 2020-12-10T10:30:00.000+01:00
+          3. 2020-12-10T10:30:00+01:00[Europe/Paris]
+          4. Anytime
+          5. null
+
+          The supplied `startTime` would be converted to a UTC date-time for the same instant using `Africa/Accra` as reference.
+      description: ''
+      security:
+        - api apiSecretKey: []
 components:
   schemas: {}
   securitySchemes:
