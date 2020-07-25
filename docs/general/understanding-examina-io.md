@@ -76,6 +76,15 @@ Webhooks can also be added to receive notifications when examinees are through w
 Together with the API endpoint, the Client application can be embedded as a widget on the organization's website with autologin enabled to by-pass additional login.
 
 
+## Circles
+
+Circles are units of permissions that are made up of Users, Exams and Examinees. Circles allow you to define a grouping that grants users explicit access to Exams and Examinees in that circle. 
+
+In a school setting for example, a Circle can be created for a course with all the assessment for that course added as Exams and the students that are registered for the course can be added to the circle as Examinees. Lecturers, Teaching Assistants and Invigilators can be added as Users. Invigilator account can only be used for proctoring.
+
+This ensures that Users can only perform actions where they have been granted permission.
+
+
 ## Conclusion
 
 examina.io is inherently distributed, allowing organizations to retain their existing workflow processes while delivering secure assessments. Each stakeholder in the organization already has a defined job description which should be respected. examina.io ensures that the stakeholders are given the adequate permissions necessary to carryout their duties effectively and their defined job descriptions are well respected. 
